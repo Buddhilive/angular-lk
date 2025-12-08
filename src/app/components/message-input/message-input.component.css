@@ -1,0 +1,28 @@
+@reference "../../../styles.css";
+
+.input-container {
+  @apply flex items-end gap-4 p-4 bg-white border-t border-gray-200;
+}
+
+.message-field {
+  @apply flex-1;
+}
+
+.message-textarea {
+  @apply resize-none;
+  min-height: 60px;
+  max-height: 150px;
+}
+
+.send-button {
+  @apply mb-2;
+  transition: transform 0.2s ease-in-out;
+}
+
+.send-button:not(:disabled):hover {
+  transform: scale(1.05);
+}
+
+.send-button:not(:disabled):active {
+  transform: scale(0.95);
+}

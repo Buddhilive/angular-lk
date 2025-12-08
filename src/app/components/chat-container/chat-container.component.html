@@ -1,0 +1,35 @@
+<div class="chat-container">
+  <!-- Toolbar -->
+  <mat-toolbar color="primary" class="chat-toolbar">
+    <mat-icon class="toolbar-icon">smart_toy</mat-icon>
+    <span class="toolbar-title">AI Chat</span>
+    <span class="toolbar-subtitle">Powered by Chrome Built-in AI</span>
+
+    <span class="spacer"></span>
+
+    <!-- Token Usage -->
+    @if (tokenQuota() > 0) {
+    <mat-chip-set class="token-chips">
+      <mat-chip [color]="getTokenColor()">
+        <mat-icon>token</mat-icon>
+        {{ tokenUsage() }} / {{ tokenQuota() }}
+      </mat-chip>
+    </mat-chip-set>
+    }
+
+    <!-- Action Buttons -->
+    <button mat-icon-button (click)="newChat()" matTooltip="New Chat">
+      <mat-icon>add</mat-icon>
+    </button>
+    <button mat-icon-button (click)="clearChat()" matTooltip="Clear Chat">
+      <mat-icon>delete_outline</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <!-- Messages -->
+  <app-message-list [messages]="messages()"></app-message-list>
+
+  <!-- Input -->
+  <app-message-input [disabled]="isLoading()" (sendMessage)="onSendMessage($event)">
+  </app-message-input>
+</div>

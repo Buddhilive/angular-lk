@@ -1,6 +1,51 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "tailwindcss";
+@import 'tailwindcss';
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* Tailwind CSS directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Material Design Icons */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Global styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', Roboto, 'Helvetica Neue', sans-serif;
+}
+
+/* Snackbar custom styles */
+.snackbar-success {
+  background-color: #4caf50 !important;
+  color: white !important;
+}
+
+.snackbar-error {
+  background-color: #f44336 !important;
+  color: white !important;
+}
+
+.snackbar-warning {
+  background-color: #ff9800 !important;
+  color: white !important;
+}
+
+.snackbar-info {
+  background-color: #2196f3 !important;
+  color: white !important;
+}

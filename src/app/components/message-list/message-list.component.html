@@ -1,0 +1,28 @@
+<div #messageContainer class="message-container">
+  @if (messages.length === 0) {
+  <div class="empty-state">
+    <div class="empty-icon">💬</div>
+    <h3 class="empty-title">Start a Conversation</h3>
+    <p class="empty-message">Ask me anything! I'm powered by Chrome's Built-in AI.</p>
+  </div>
+  } @for (message of messages; track message.id) {
+  <div [class]="'message-wrapper ' + getMessageAlignment(message.role)">
+    <mat-card [class]="getMessageClass(message.role)">
+      <mat-card-content class="message-content">
+        <div class="message-text">{{ message.content }}</div>
+
+        @if (message.isStreaming) {
+        <div class="streaming-indicator">
+          <mat-spinner diameter="16"></mat-spinner>
+          <span class="streaming-text">Generating...</span>
+        </div>
+        }
+      </mat-card-content>
+
+      <div class="message-timestamp">
+        {{ message.timestamp | date : 'short' }}
+      </div>
+    </mat-card>
+  </div>
+  }
+</div>

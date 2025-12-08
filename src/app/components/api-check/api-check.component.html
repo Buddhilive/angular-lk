@@ -1,0 +1,84 @@
+<div class="api-check-container">
+  <div class="api-check-card">
+    <!-- Checking Status -->
+    @if (status() === 'checking') {
+    <div class="status-content">
+      <mat-spinner diameter="60"></mat-spinner>
+      <h2 class="status-title">Checking API Availability</h2>
+      <p class="status-message">Please wait while we verify the Prompt API...</p>
+    </div>
+    }
+
+    <!-- Ready Status -->
+    @if (status() === 'ready') {
+    <div class="status-content">
+      <mat-icon [class]="getStatusColor()" class="status-icon">
+        {{ getStatusIcon() }}
+      </mat-icon>
+      <h2 class="status-title text-green-600">API Ready!</h2>
+      <p class="status-message">The Chrome Prompt API is ready to use.</p>
+    </div>
+    }
+
+    <!-- Downloading Status -->
+    @if (status() === 'downloading') {
+    <div class="status-content">
+      <mat-icon [class]="getStatusColor()" class="status-icon animate-bounce">
+        {{ getStatusIcon() }}
+      </mat-icon>
+      <h2 class="status-title text-blue-600">Downloading Model</h2>
+      <p class="status-message">The AI model is being downloaded. This may take a few minutes...</p>
+      <div class="progress-container">
+        <mat-progress-bar mode="determinate" [value]="downloadProgress()" class="download-progress">
+        </mat-progress-bar>
+        <span class="progress-text">{{ downloadProgress().toFixed(0) }}%</span>
+      </div>
+    </div>
+    }
+
+    <!-- Unavailable Status -->
+    @if (status() === 'unavailable') {
+    <div class="status-content">
+      <mat-icon [class]="getStatusColor()" class="status-icon">
+        {{ getStatusIcon() }}
+      </mat-icon>
+      <h2 class="status-title text-red-600">API Unavailable</h2>
+      <p class="status-message error-message">{{ errorMessage() }}</p>
+      <button mat-raised-button color="primary" (click)="retry()" class="retry-button">
+        <mat-icon>refresh</mat-icon>
+        Retry
+      </button>
+    </div>
+    }
+
+    <!-- Unsupported Browser -->
+    @if (status() === 'unsupported') {
+    <div class="status-content">
+      <mat-icon [class]="getStatusColor()" class="status-icon">
+        {{ getStatusIcon() }}
+      </mat-icon>
+      <h2 class="status-title text-red-600">Browser Not Supported</h2>
+      <p class="status-message error-message">{{ errorMessage() }}</p>
+
+      <div class="instructions">
+        <h3 class="instructions-title">Setup Instructions:</h3>
+        <ol class="instructions-list">
+          <li>Open Chrome browser</li>
+          <li>Navigate to <code>chrome://flags/#optimization-guide-on-device-model</code></li>
+          <li>Set the flag to <strong>Enabled</strong></li>
+          <li>
+            Navigate to <code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code>
+          </li>
+          <li>Set the flag to <strong>Enabled</strong></li>
+          <li>Restart Chrome</li>
+        </ol>
+      </div>
+
+      <button mat-raised-button color="primary" (click)="retry()" class="retry-button">
+        <mat-icon>refresh</mat-icon>
+        Check Again
+      </button>
+    </div>
+    }
+  </div>
+</div>
