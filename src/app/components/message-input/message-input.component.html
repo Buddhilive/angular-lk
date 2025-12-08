@@ -1,27 +1,23 @@
 <div class="input-container">
-  <mat-form-field appearance="outline" class="message-field">
-    <mat-label>Type your message...</mat-label>
+  <div class="input-wrapper">
     <textarea
-      matInput
       [value]="message()"
       (input)="updateMessage($any($event.target).value)"
       (keydown)="onKeyDown($event)"
       [disabled]="disabled"
       placeholder="Ask me anything..."
-      rows="3"
       class="message-textarea"
     ></textarea>
-    <mat-hint>Press Enter to send, Shift+Enter for new line</mat-hint>
-  </mat-form-field>
 
-  <button
-    mat-fab
-    color="primary"
-    (click)="onSend()"
-    [disabled]="disabled || !message().trim()"
-    class="send-button"
-    aria-label="Send message"
-  >
-    <mat-icon>send</mat-icon>
-  </button>
+    <button
+      (click)="onSend()"
+      [disabled]="disabled || !message().trim()"
+      class="send-button"
+      [class.disabled]="disabled || !message().trim()"
+      aria-label="Send message"
+    >
+      <mat-icon>arrow_upward</mat-icon>
+    </button>
+  </div>
+  <div class="input-hint">Press Enter to send, Shift+Enter for new line</div>
 </div>

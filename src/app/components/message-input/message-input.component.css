@@ -1,28 +1,35 @@
 @reference "../../../styles.css";
 
 .input-container {
-  @apply flex items-end gap-4 p-4 bg-white border-t border-gray-200;
+  @apply flex flex-col p-4 bg-white border-t border-gray-200;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.message-field {
-  @apply flex-1;
+.input-wrapper {
+  @apply relative flex items-end bg-gray-100 rounded-3xl w-full border border-transparent focus-within:bg-white focus-within:border-blue-300 focus-within:ring-4 focus-within:ring-blue-100 transition-all duration-200;
 }
 
 .message-textarea {
-  @apply resize-none;
-  min-height: 60px;
-  max-height: 150px;
+  @apply w-full bg-transparent border-none focus:ring-0 resize-none py-3 pl-5 pr-14 text-gray-800 text-[15px] leading-relaxed placeholder-gray-500;
+  min-height: 52px;
+  max-height: 200px;
 }
 
 .send-button {
-  @apply mb-2;
-  transition: transform 0.2s ease-in-out;
+  @apply absolute right-2 bottom-2 p-2 rounded-full text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:text-gray-500 transition-all duration-200 shadow-sm flex items-center justify-center;
 }
 
 .send-button:not(:disabled):hover {
-  transform: scale(1.05);
+  transform: translateY(-1px);
+  @apply shadow-md;
 }
 
-.send-button:not(:disabled):active {
-  transform: scale(0.95);
+.send-button:active {
+  transform: translateY(0);
+}
+
+.input-hint {
+  @apply text-xs text-gray-400 text-center mt-2 font-medium;
 }

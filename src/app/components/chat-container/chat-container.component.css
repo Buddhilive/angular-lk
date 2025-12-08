@@ -5,19 +5,20 @@
 }
 
 .chat-toolbar {
-  @apply shadow-md;
+  @apply bg-white border-b border-gray-200 shadow-sm px-4 md:px-6 z-10 !important;
+  min-height: 64px !important;
 }
 
 .toolbar-icon {
-  @apply mr-2;
+  @apply mr-3 text-blue-600;
 }
 
 .toolbar-title {
-  @apply text-xl font-bold;
+  @apply text-lg font-bold text-gray-900 tracking-tight;
 }
 
 .toolbar-subtitle {
-  @apply ml-2 text-sm opacity-80 hidden md:inline;
+  @apply ml-3 text-sm text-gray-500 font-medium hidden md:inline border-l border-gray-300 pl-3;
 }
 
 .spacer {
@@ -25,5 +26,5 @@
 }
 
 .token-chips {
-  @apply mr-4;
+  @apply mr-2;
 }

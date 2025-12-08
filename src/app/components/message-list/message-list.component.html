@@ -7,8 +7,8 @@
   </div>
   } @for (message of messages; track message.id) {
   <div [class]="'message-wrapper ' + getMessageAlignment(message.role)">
-    <mat-card [class]="getMessageClass(message.role)">
-      <mat-card-content class="message-content">
+    <div [class]="getMessageClass(message.role)">
+      <div class="message-content">
         <div class="message-text">{{ message.content }}</div>
 
         @if (message.isStreaming) {
@@ -17,12 +17,12 @@
           <span class="streaming-text">Generating...</span>
         </div>
         }
-      </mat-card-content>
+      </div>
 
       <div class="message-timestamp">
         {{ message.timestamp | date : 'short' }}
       </div>
-    </mat-card>
+    </div>
   </div>
   }
 </div>

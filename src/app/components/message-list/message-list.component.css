@@ -26,23 +26,23 @@
 }
 
 .message-user {
-  @apply bg-gradient-to-r from-blue-500 to-blue-600 text-white;
-  max-width: 80%;
+  @apply bg-blue-600 text-white rounded-2xl rounded-tr-none px-5 py-3 shadow-sm;
+  max-width: 85%;
   margin-left: auto;
 }
 
 .message-assistant {
-  @apply bg-white border border-gray-200;
-  max-width: 80%;
+  @apply bg-white text-gray-800 border border-gray-100 rounded-2xl rounded-tl-none px-5 py-3 shadow-sm;
+  max-width: 85%;
   margin-right: auto;
 }
 
 .message-content {
-  @apply p-0;
+  @apply flex flex-col gap-1;
 }
 
 .message-text {
-  @apply whitespace-pre-wrap break-words;
+  @apply whitespace-pre-wrap break-words text-[15px] leading-relaxed;
 }
 
 .message-user .message-text {
