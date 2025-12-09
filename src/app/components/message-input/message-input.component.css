@@ -1,7 +1,7 @@
 @reference "../../../styles.css";
 
 .input-container {
-  @apply flex flex-col p-4 bg-white border-t border-gray-200;
+  @apply flex flex-col p-4 bg-transparent;
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
@@ -12,7 +12,7 @@
 }
 
 .message-textarea {
-  @apply w-full bg-transparent border-none focus:ring-0 resize-none py-3 pl-5 pr-14 text-gray-800 text-[15px] leading-relaxed placeholder-gray-500;
+  @apply w-full bg-transparent border-none focus:ring-0 resize-none py-3 pl-5 pr-14 text-gray-800 text-[15px] leading-relaxed placeholder-gray-500 focus:outline-none;
   min-height: 52px;
   max-height: 200px;
 }

@@ -10,9 +10,11 @@
     <!-- Token Usage -->
     @if (tokenQuota() > 0) {
     <mat-chip-set class="token-chips">
-      <mat-chip [color]="getTokenColor()">
-        <mat-icon>token</mat-icon>
-        {{ tokenUsage() }} / {{ tokenQuota() }}
+      <mat-chip [color]="getTokenColor()" title="Token Usage">
+        <div class="token-chip">
+          <mat-icon>token</mat-icon>
+          <span>{{ tokenUsage() }} / {{ tokenQuota() }}</span>
+        </div>
       </mat-chip>
     </mat-chip-set>
     }

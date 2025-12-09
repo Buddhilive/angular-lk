@@ -28,3 +28,7 @@
 .token-chips {
   @apply mr-2;
 }
+
+.token-chip {
+  @apply flex items-center gap-2;
+}
