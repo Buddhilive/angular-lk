@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ChatSessionMetadata } from '../../models/chat.models';
 import { DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { LayoutService } from '../../services/layout.service';
 
 @Component({
   selector: 'app-chat-sidebar',
@@ -15,6 +16,7 @@ import { RouterModule } from '@angular/router';
   styleUrl: './chat-sidebar.component.css',
 })
 export class ChatSidebarComponent {
+  public layoutService = inject(LayoutService);
   @Input() chats: ChatSessionMetadata[] = [];
   @Input() currentChatId: string | null = null;
   @Output() selectChat = new EventEmitter<string>();

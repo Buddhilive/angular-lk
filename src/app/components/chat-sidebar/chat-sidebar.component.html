@@ -1,6 +1,16 @@
 <div class="sidebar-container">
   <div class="sidebar-header">
-    <button mat-extended-fab color="primary" (click)="onNewChat()">
+    <div class="header-actions">
+      <button
+        mat-icon-button
+        (click)="layoutService.setSidenavOpen(false)"
+        class="close-btn"
+        aria-label="Close sidebar"
+      >
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+    </div>
+    <button mat-flat-button class="new-chat-btn" (click)="onNewChat()">
       <mat-icon>add</mat-icon>
       New Chat
     </button>

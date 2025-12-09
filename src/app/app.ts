@@ -1,4 +1,4 @@
-import { Component, signal, inject, ViewChild } from '@angular/core';
+import { Component, signal, inject, ViewChild, effect } from '@angular/core';
 import { RouterOutlet, Router } from '@angular/router';
 import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
 import { AsyncPipe } from '@angular/common';
@@ -7,6 +7,7 @@ import { ChatContainerComponent } from './components/chat-container/chat-contain
 import { ChatSidebarComponent } from './components/chat-sidebar/chat-sidebar.component';
 import { ApiStatus } from './models/chat.models';
 import { StorageService } from './services/storage.service';
+import { LayoutService } from './services/layout.service';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ import { StorageService } from './services/storage.service';
 export class App {
   private router = inject(Router);
   private storageService = inject(StorageService);
+  public layoutService = inject(LayoutService);
 
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
@@ -26,18 +28,38 @@ export class App {
 
   chats$ = this.storageService.chats$;
 
+  constructor() {
+    effect(() => {
+      // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError if needed
+      // or just ensure this runs after init.
+      // Effect runs asynchronously usually.
+      const isOpen = this.layoutService.isSidenavOpen();
+      if (this.sidenav) {
+        if (isOpen) {
+          this.sidenav.open();
+        } else {
+          this.sidenav.close();
+        }
+      }
+    });
+  }
+
   onApiStatusChange(status: ApiStatus): void {
     this.apiStatus.set(status);
   }
 
   onChatSelect(id: string): void {
     this.router.navigate(['/chat', id]);
-    // On mobile, we might want to close the sidenav
-    // this.sidenav.close();
+    if (window.innerWidth < 768) {
+      this.layoutService.setSidenavOpen(false);
+    }
   }
 
   onNewChat(): void {
     this.router.navigate(['/']);
+    if (window.innerWidth < 768) {
+      this.layoutService.setSidenavOpen(false);
+    }
   }
 
   onDeleteChat(id: string): void {

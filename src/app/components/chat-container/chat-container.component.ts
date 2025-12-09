@@ -11,6 +11,7 @@ import { PromptApiService } from '../../services/prompt-api.service';
 import { SnackbarService } from '../../services/snackbar.service';
 import { StorageService } from '../../services/storage.service';
 import { SummarizerService } from '../../services/summarizer.service';
+import { LayoutService } from '../../services/layout.service';
 import { ChatMessage, ChatErrorType, ChatSession } from '../../models/chat.models';
 
 @Component({
@@ -33,6 +34,7 @@ export class ChatContainerComponent implements OnInit {
   private snackbarService = inject(SnackbarService);
   private storageService = inject(StorageService);
   private summarizerService = inject(SummarizerService);
+  public layoutService = inject(LayoutService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 

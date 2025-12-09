@@ -1,6 +1,9 @@
 <div class="chat-container">
   <!-- Toolbar -->
   <mat-toolbar class="chat-toolbar">
+    <button mat-icon-button (click)="layoutService.toggleSidenav()" aria-label="Toggle sidebar">
+      <mat-icon>menu</mat-icon>
+    </button>
     <mat-icon class="toolbar-icon">smart_toy</mat-icon>
     <span class="toolbar-title">AI Chat</span>
     <span class="toolbar-subtitle">Powered by Chrome Built-in AI</span>
