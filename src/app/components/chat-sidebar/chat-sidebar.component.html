@@ -1,0 +1,31 @@
+<div class="sidebar-container">
+  <div class="sidebar-header">
+    <button mat-extended-fab color="primary" (click)="onNewChat()">
+      <mat-icon>add</mat-icon>
+      New Chat
+    </button>
+  </div>
+
+  <div class="chat-list">
+    <mat-nav-list>
+      @for (chat of chats; track chat.id) {
+      <a mat-list-item [class.active]="chat.id === currentChatId" (click)="onSelect(chat.id)">
+        <span matListItemTitle>{{ chat.title }}</span>
+        <span matListItemLine>{{ chat.timestamp | date : 'short' }}</span>
+        <button
+          mat-icon-button
+          matListItemMeta
+          (click)="onDelete($event, chat.id)"
+          aria-label="Delete chat"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </a>
+      } @empty {
+      <div class="empty-state">
+        <p>No chat history</p>
+      </div>
+      }
+    </mat-nav-list>
+  </div>
+</div>

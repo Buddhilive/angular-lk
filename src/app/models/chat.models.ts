@@ -45,3 +45,20 @@ export interface ChatError {
   message: string;
   details?: any;
 }
+
+/**
+ * Chat session metadata for the list view
+ */
+export interface ChatSessionMetadata {
+  id: string;
+  title: string;
+  timestamp: Date;
+}
+
+/**
+ * Full chat session with messages
+ */
+export interface ChatSession extends ChatSessionMetadata {
+  messages: ChatMessage[];
+  tokenUsage: number;
+}

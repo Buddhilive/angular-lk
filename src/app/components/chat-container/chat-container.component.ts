@@ -1,14 +1,17 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, OnInit, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageListComponent } from '../message-list/message-list.component';
 import { MessageInputComponent } from '../message-input/message-input.component';
 import { PromptApiService } from '../../services/prompt-api.service';
 import { SnackbarService } from '../../services/snackbar.service';
-import { ChatMessage, ChatErrorType } from '../../models/chat.models';
+import { StorageService } from '../../services/storage.service';
+import { SummarizerService } from '../../services/summarizer.service';
+import { ChatMessage, ChatErrorType, ChatSession } from '../../models/chat.models';
 
 @Component({
   selector: 'app-chat-container',
@@ -25,19 +28,55 @@ import { ChatMessage, ChatErrorType } from '../../models/chat.models';
   templateUrl: './chat-container.component.html',
   styleUrl: './chat-container.component.css',
 })
-export class ChatContainerComponent {
+export class ChatContainerComponent implements OnInit {
   private promptApiService = inject(PromptApiService);
   private snackbarService = inject(SnackbarService);
+  private storageService = inject(StorageService);
+  private summarizerService = inject(SummarizerService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   messages = signal<ChatMessage[]>([]);
   isLoading = signal<boolean>(false);
   tokenUsage = signal<number>(0);
   tokenQuota = signal<number>(0);
 
+  chatId: string | null = null;
+  chatTitle = 'New Chat';
+
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(async (params) => {
+      const id = params.get('id');
+      if (id) {
+        if (this.chatId !== id) {
+          this.chatId = id;
+          await this.loadChat(id);
+        }
+      } else {
+        this.newChat();
+      }
+    });
+  }
+
+  async loadChat(id: string): Promise<void> {
+    const chat = await this.storageService.getChat(id);
+    if (chat) {
+      this.messages.set(chat.messages);
+      this.tokenUsage.set(chat.tokenUsage);
+      this.chatTitle = chat.title;
+    } else {
+      this.snackbarService.error('Chat not found');
+      this.router.navigate(['/']);
+    }
+  }
+
   async onSendMessage(content: string): Promise<void> {
     if (!content.trim() || this.isLoading()) {
       return;
     }
+
+    const currentMessages = this.messages();
+    const isFirstMessage = currentMessages.length === 0;
 
     // Add user message
     const userMessage: ChatMessage = {
@@ -86,6 +125,9 @@ export class ChatContainerComponent {
 
       // Update token usage
       this.updateTokenUsage();
+
+      // Save chat
+      await this.saveCurrentChat(isFirstMessage, content);
     } catch (error: any) {
       console.error('Error sending message:', error);
 
@@ -99,9 +141,35 @@ export class ChatContainerComponent {
     }
   }
 
+  async saveCurrentChat(isFirstMessage: boolean, firstPrompt: string): Promise<void> {
+    // If it's a new chat, generate ID and title
+    if (!this.chatId) {
+      this.chatId = this.generateId();
+
+      // Generate title asynchronously
+      const summary = await this.summarizerService.summarize(firstPrompt);
+      this.chatTitle = summary;
+
+      // Update URL without reloading (optional, but good UX)
+      // Actually, navigation is better to ensure consistent state/URL
+      this.router.navigate(['/chat', this.chatId], { replaceUrl: true });
+    }
+
+    const chatSession: ChatSession = {
+      id: this.chatId!,
+      title: this.chatTitle,
+      timestamp: new Date(),
+      messages: this.messages(),
+      tokenUsage: this.tokenUsage(),
+    };
+
+    if (this.chatId) {
+      await this.storageService.saveChat(chatSession as ChatSession);
+    }
+  }
+
   private handleError(error: any): void {
     const errorType = error.type || ChatErrorType.UNKNOWN;
-    const errorMessage = error.message || 'An unexpected error occurred';
 
     // Log full error to console
     console.error('Chat error details:', error);
@@ -139,32 +207,29 @@ export class ChatContainerComponent {
     }
   }
 
-  clearChat(): void {
+  // Modified newChat to just reset state as it is handled by routing for "New Chat" button
+  newChat(): void {
+    this.chatId = null;
+    this.chatTitle = 'New Chat';
     this.messages.set([]);
     this.tokenUsage.set(0);
     this.tokenQuota.set(0);
-    this.snackbarService.info('Chat cleared');
-  }
-
-  newChat(): void {
-    // Destroy current session and create new one
     this.promptApiService.destroySession();
-    this.clearChat();
-
-    // Create new session
     this.promptApiService
       .createSession()
-      .then(() => {
-        this.snackbarService.success('New chat started');
-      })
-      .catch((error) => {
-        console.error('Error creating new session:', error);
-        this.snackbarService.error('Failed to start new chat');
-      });
+      .catch((err) => console.error('Failed to create session', err));
   }
 
-  private generateId(): string {
-    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  clearChat(): void {
+    if (confirm('Are you sure you want to clear this chat?')) {
+      if (this.chatId) {
+        this.storageService.deleteChat(this.chatId).then(() => {
+          this.router.navigate(['/']);
+        });
+      } else {
+        this.newChat();
+      }
+    }
   }
 
   getTokenPercentage(): number {
@@ -177,5 +242,9 @@ export class ChatContainerComponent {
     if (percentage > 80) return 'warn';
     if (percentage > 60) return 'accent';
     return 'primary';
+  }
+
+  private generateId(): string {
+    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 }

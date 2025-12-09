@@ -1,5 +1,18 @@
 @if (apiStatus() === 'ready') {
-<app-chat-container></app-chat-container>
+<mat-sidenav-container class="app-container">
+  <mat-sidenav #sidenav mode="side" opened class="app-sidenav">
+    <app-chat-sidebar
+      [chats]="(chats$ | async) || []"
+      (selectChat)="onChatSelect($event)"
+      (newChat)="onNewChat()"
+      (deleteChat)="onDeleteChat($event)"
+    >
+    </app-chat-sidebar>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
 } @else {
 <app-api-check (statusChange)="onApiStatusChange($event)"></app-api-check>
 }
