@@ -6,7 +6,7 @@ import { ApiStatus } from './models/chat.models';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ApiCheckComponent, ChatContainerComponent],
+  imports: [ApiCheckComponent, ChatContainerComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

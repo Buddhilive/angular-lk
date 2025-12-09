@@ -1,8 +1,13 @@
 @reference "../../../styles.css";
 
+:host {
+  @apply flex-1 overflow-y-auto min-h-0 w-full;
+  display: flex;
+  flex-direction: column;
+}
+
 .message-container {
-  @apply flex-1 overflow-y-auto p-4 space-y-4;
-  max-height: calc(100vh - 200px);
+  @apply flex-1 p-4 space-y-6 max-w-[900px] w-full mx-auto;
 }
 
 .empty-state {

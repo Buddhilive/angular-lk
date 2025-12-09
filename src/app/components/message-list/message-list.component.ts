@@ -13,9 +13,10 @@ import { ChatMessage } from '../../models/chat.models';
 })
 export class MessageListComponent implements AfterViewChecked {
   @Input() messages: ChatMessage[] = [];
-  @ViewChild('messageContainer') private messageContainer!: ElementRef;
 
   private shouldScroll = signal(false);
+
+  constructor(private elementRef: ElementRef) {}
 
   ngAfterViewChecked() {
     if (this.shouldScroll()) {
@@ -30,10 +31,8 @@ export class MessageListComponent implements AfterViewChecked {
 
   private scrollToBottom(): void {
     try {
-      if (this.messageContainer) {
-        this.messageContainer.nativeElement.scrollTop =
-          this.messageContainer.nativeElement.scrollHeight;
-      }
+      const element = this.elementRef.nativeElement;
+      element.scrollTop = element.scrollHeight;
     } catch (err) {
       console.error('Error scrolling to bottom:', err);
     }

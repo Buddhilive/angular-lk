@@ -5,7 +5,7 @@
 }
 
 .chat-toolbar {
-  @apply bg-white border-b border-gray-200 shadow-sm px-4 md:px-6 z-10 !important;
+  @apply bg-white border-b border-gray-200 shadow-sm px-4 md:px-6 z-10;
   min-height: 64px !important;
 }
 

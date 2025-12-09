@@ -69,7 +69,7 @@ export class ChatContainerComponent {
 
       // Process stream
       for await (const chunk of stream) {
-        fullResponse = chunk;
+        fullResponse += chunk;
 
         // Update the assistant message with accumulated content
         this.messages.update((msgs) =>
